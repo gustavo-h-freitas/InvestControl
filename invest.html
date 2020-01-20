@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.1/axios.min.js"></script>
+  <title>sas</title>
+</head>
+<body>
+  <div id='app'>
+    <table>
+      <tr>
+        <th>Ativo</th>
+        <th>CP</th>
+        <th>Quantidade</th>
+        <th>Venda</th>
+        <th>Lucro/Prejuízo</th>
+        <th>Preço atual</th>
+      </tr>
+      <tr v-for='papel in papeis'>
+        <td>{{ papel.fracionado ? papel.ticker+'F' : papel.ticker }}</td>
+        <td><input v-model="papel.compra" type="number"></td>
+        <td><input v-model="papel.quantidade" type="number"></td>
+        <td><input v-model="papel.venda" type="number" v-on:input="lucroPrej(papel.ticker)"></td>
+        <td>{{ papel.result }}</td>
+        <td>{{ papel.valor }}</td>
+      </tr>
+    </table>
+    <div id="controllers">
+      <button id="b1" v-on:click="salvarDados()">Salvar</button>
+    </div>
+    <div id="addField">
+      <h3>Adicionar papel</h3>
+      <select v-model="add">
+        <option value="none" disabled>Selecione um papel</option>
+        <option value="ABEV3">Ambev S.A. - ABEV3</option>
+        <option value="ARZZ3">Arezzo Indústria e Comércio S.A. - ARZZ3</option>
+        <option value="AZUL4">Azul S.A. - AZUL4</option>
+        <option value="BTOW3">B2W - Companhia Digital - BTOW3</option>
+        <option value="B3SA3">B3 S.A. - Brasil, Bolsa, Balcão - B3SA3</option>
+        <option value="BBDC3">Banco Bradesco S.A. - BBDC3</option>
+        <option value="BBDC4">Banco Bradesco S.A. - BBDC4</option>
+        <option value="BBAS3">Banco do Brasil S.A. - BBAS3</option>
+        <option value="BIDI4">Banco Inter S.A. - BIDI4</option>
+        <option value="SANB3">Banco Santander (Brasil) S.A. - SANB3</option>
+        <option value="SANB11">Banco Santander (Brasil) S.A. - SANB11</option>
+        <option value="BBSE3">BB Seguridade Participações S.A. - BBSE3</option>
+        <option value="BRML3">BR Malls Participações S.A. - BRML3</option>
+        <option value="BRAP4">Bradespar S.A. - BRAP4</option>
+        <option value="BRKM5">Braskem S.A. - BRKM5</option>
+        <option value="BRFS3">BRF S.A. - BRFS3</option>
+        <option value="CCRO3">CCR S.A. - CCRO3</option>
+        <option value="ELET3">Centrais Elétricas Brasileiras S.A. - Eletrobras - ELET3</option>
+        <option value="ELET6">Centrais Elétricas Brasileiras S.A. - Eletrobras - ELET6</option>
+        <option value="CIEL3">Cielo S.A. - CIEL3</option>
+        <option value="PCAR4">Companhia Brasileira de Distribuição - PCAR4</option>
+        <option value="SBSP3">Companhia de Saneamento Básico do Estado de São Paulo - SABESP - SBSP3</option>
+        <option value="CMIG3">Companhia Energética de Minas Gerais - CMIG3</option>
+        <option value="CMIG4">Companhia Energética de Minas Gerais - CMIG4</option>
+        <option value="CPLE6">Companhia Paranaense de Energia - COPEL - CPLE6</option>
+        <option value="CPLE3">Companhia Paranaense de Energia - COPEL - CPLE3</option>
+        <option value="CSNA3">Companhia Siderúrgica Nacional - CSNA3</option>
+        <option value="CSAN3">Cosan S.A. - CSAN3</option>
+        <option value="CPFE3">CPFL Energia S.A. - CPFE3</option>
+        <option value="CVCB3">CVC Brasil Operadora e Agência de Viagens S.A. - CVCB3</option>
+        <option value="CYRE3">Cyrela Brazil Realty S.A. Empreendimentos e Participações - CYRE3</option>
+        <option value="ECOR3">EcoRodovias Infraestrutura e Logística S.A. - ECOR3</option>
+        <option value="ENBR3">EDP - Energias do Brasil S.A. - ENBR3</option>
+        <option value="EMBR3">Embraer S.A. - EMBR3</option>
+        <option value="EGIE3">Engie Brasil Energia S.A. - EGIE3</option>
+        <option value="EQTL3">Equatorial Energia S.A. - EQTL3</option>
+        <option value="ESTC3">Estácio Participações S.A. - ESTC3</option>
+        <option value="FLRY3">Fleury S.A. - FLRY3</option>
+        <option value="GGBR3">Gerdau S.A. - GGBR3</option>
+        <option value="GGBR4">Gerdau S.A. - GGBR4</option>
+        <option value="GOLL4">Gol Linhas Aéreas Inteligentes S.A. - GOLL4</option>
+        <option value="HYPE3">Hypera S.A. - HYPE3</option>
+        <option value="IGTA3">Iguatemi Empresa de Shopping Centers S.A. - IGTA3</option>
+        <option value="IRBR3">IRB-Brasil Resseguros S.A. - IRBR3</option>
+        <option value="ITUB4">Itaú Unibanco Holding S.A. - ITUB4</option>
+        <option value="ITSA4">Itaúsa - Investimentos Itaú S.A. - ITSA4</option>
+        <option value="JBSS3">JBS S.A. - JBSS3</option>
+        <option value="KLBN11">KLABIN S/A UNT N2 - KLBN11</option>
+        <option value="KROT3">Kroton Educacional S.A. - KROT3</option>
+        <option value="RENT3">Localiza Rent a Car S.A. - RENT3</option>
+        <option value="LAME4">Lojas Americanas S.A. - LAME4</option>
+        <option value="LREN3">Lojas Renner S.A. - LREN3</option>
+        <option value="MGLU3">Magazine Luiza S.A. - MGLU3</option>
+        <option value="MRFG3">Marfrig Global Foods S.A. - MRFG3</option>
+        <option value="GOAU4">Metalurgica Gerdau S.A. - GOAU4</option>
+        <option value="MRVE3">MRV Engenharia e Participações S.A. - MRVE3</option>
+        <option value="MULT3">Multiplan Empreendimentos Imobiliários S.A. - MULT3</option>
+        <option value="NATU3">Natura Cosméticos S.A. - NATU3</option>
+        <option value="BRDT3">Petrobras Distribuidora S.A. - BRDT3</option>
+        <option value="PETR4">Petróleo Brasileiro S.A. - Petrobras - PETR4</option>
+        <option value="PETR3">Petróleo Brasileiro S.A. - Petrobras - PETR3</option>
+        <option value="QUAL3">Qualicorp Consultoria e Corretora de Seguros S.A. - QUAL3</option>
+        <option value="RADL3">Raia Drogasil S.A. - RADL3</option>
+        <option value="RAIL3">Rumo S.A. - RAIL3</option>
+        <option value="SQIA3">Sinqia S.A. - SQIA3</option>
+        <option value="SMLS3">Smiles Fidelidade S.A. - SMLS3</option>
+        <option value="SUZB3">Suzano S.A. - SUZB3</option>
+        <option value="FJTA4">Taurus S.A. - FJTA4</option>
+        <option value="VIVT4">Telefônica Brasil S.A. - VIVT4</option>
+        <option value="TIMP3">TIM Participações S.A. - TIMP3</option>
+        <option value="TAEE11">Transmissora Aliança de Energia Elétrica S.A. - TAEE11</option>
+        <option value="UGPA3">Ultrapar Participações S.A. - UGPA3</option>
+        <option value="USIM5">Usinas Siderúrgicas de Minas Gerais S.A. - USIM5</option>
+        <option value="VALE3">Vale S.A. - VALE3</option>
+        <option value="VVAR3">Via Varejo S.A. - VVAR3</option>
+        <option value="WEGE3">WEG S.A. - WEGE3</option>
+      </select><br>
+      <input type="checkbox" v-model="addFrac">Fracionado?<br>
+      <button v-on:click="addPapel()">Adicionar</button>
+    </div>
+  </div>
+  <script>
+    var app = new Vue({
+      el: '#app',
+      data() {
+        return{
+          papeis: [
+            {
+              ticker: 'BIDI4',
+              fracionado: true,
+              compra: 17.42,
+              quantidade: null,
+              venda: null,
+              valor: null
+            }
+          ],
+          add: 'none',
+          addFrac: false
+        }
+      },
+      methods:{
+        lucroPrej(papel){
+          console.log(papel)
+          idx = this.papeis.findIndex(x => x.ticker == papel)
+          if (idx !== -1) {
+            let compra1 = this.papeis[idx].compra
+            let init1 = this.papeis[idx].compra * this.papeis[idx].quantidade
+            let fin1 = this.papeis[idx].venda * this.papeis[idx].quantidade
+            this.papeis[idx].result = 'R$' + (fin1 - init1).toFixed(2)
+          } else {
+            alert('Papel não encontrado')
+          }
+        },
+        salvarDados(){
+          console.log(this.papeis)
+          localStorage.setItem('papeis', JSON.stringify(this.papeis))
+        },
+        getValue(ticker){
+          console.log('called', ticker, this.papeis)
+          axios.get('http://165.22.5.51:1337/?papel='+ticker)
+          .then(x => {
+            this.papeis.find(x => x.ticker == ticker).valor = x.data.results[ticker].price.toFixed(2)
+            console.log(this.papeis)
+          })
+          .catch(error => {
+            console.log(error)
+          })
+        },
+        addPapel() {
+          if (this.add !== 'none') {
+            this.papeis.push({
+              ticker: this.add,
+              fracionado: this.addFrac,
+              compra: null,
+              quantidade: null,
+              venda: null,
+              valor: null
+            })
+            this.getValue(this.add)
+            this.add = 'none'
+          }
+        }
+      },
+      beforeMount(){
+        if(localStorage.getItem('papeis')){
+          this.papeis = JSON.parse(localStorage.getItem('papeis'))
+        }
+        for(let i in this.papeis) {
+          this.getValue(this.papeis[i].ticker)
+        }
+      }
+    })
+  </script>
+</body>
+</html>

@@ -1,0 +1,22 @@
+table, tr, td, th{
+  margin-top: 10%;
+  margin-left: auto;
+  margin-right: auto;
+  border: 1px solid black;
+  padding: 10px;
+  background-color: #fffff4;
+}
+td{
+  font-weight: 500;
+}
+
+#controllers {
+  margin-top: 10px;
+  text-align: center;
+}
+
+#addField {
+  text-align: center;
+  background-color: #fffff4;
+  padding: 10%;
+}
